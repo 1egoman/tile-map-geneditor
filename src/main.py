@@ -231,7 +231,13 @@ class Events(object):
             pygame.image.save(img, save_path + ".bmp")
             # Save map data as JSON data
             with open(save_path + ".json", 'w') as f:
-                json.dump({'generator_data' : self.MapGen.params, 'tile_map' : self.common.tile_map}, f)
+                data = {'generator_data' : self.MapGen.params, 'tile_map' : self.common.tile_map}
+                # how does the user feel about indentation?
+                spaces = easygui.buttonbox("Should I prettyprint the JSON results?", "prettyprint?", ("Yes", "No")) == "Yes" and 4 or 0
+                if spaces != 0:
+                    json.dump(data, f, indent=spaces)
+                else:
+                    json.dump(data, f)
             # Indicate saving is complete
             easygui.msgbox("\"" + str(os.path.basename(save_path)) + "\" saved successfully", "Save Complete")
 
